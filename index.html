@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang = "zh-TW">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+    <title>火的故事</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", "Meiryo", sans-serif;
+            font-size: 20px;
+            line-height: 2.8;
+            padding: 40px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            max-width: 650px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        p {
+            margin: 0 0 10px 0;
+        }
+        ruby {
+            ruby-position: over;
+        }
+        rt {
+            font-size: 0.55em;
+            color: #666;
+        }
+        .site-footer h1 {
+            text-align: center;
+            font-size: 12px;
+        }
+        .site-footer a {
+            color: #828282;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .floating-audio-player {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            background-color: #f1f3f4;
+            border-radius: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .floating-audio-player .player-content {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0 10px 16px;
+            max-width: 450px;
+            opacity: 1;
+            transition: max-width 0.3s ease, opacity 0.2s ease, padding 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .floating-audio-player.collapsed .player-content {
+            max-width: 0;
+            opacity: 0;
+            padding: 10px 0;
+            pointer-events: none;
+        }
+
+        .floating-audio-player .play-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: none;
+            background-color: #c5c6c6;
+            color: #ffffff;
+            font-size: 13px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .floating-audio-player .play-btn:hover {
+            background-color: #8e8f8f;
+        }
+
+        .floating-audio-player .progress-bar {
+            width: 140px;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e0e0e0;
+        }
+
+        .floating-audio-player .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #8e8f8f;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .floating-audio-player .progress-bar::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .floating-audio-player .progress-bar::-moz-range-thumb {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: none;
+            background-color: #8e8f8f;
+            cursor: pointer;
+        }
+
+        .floating-audio-player .time-display {
+            font-size: 13px;
+            color: #555;
+            min-width: 75px;
+            user-select: none;
+        }
+
+        .floating-audio-player .toggle-btn {
+            background: none;
+            border: none;
+            color: #777;
+            font-size: 11px;
+            cursor: pointer;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s;
+            user-select: none;
+        }
+
+        .floating-audio-player .toggle-btn:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class = "floating-audio-player" id = "floatingPlayer">
+  <audio id = "myAudio" src = "audio_files.mp3"></audio>
+
+
+  <div class = "player-content">
+    <button id = "playBtn" class = "play-btn" aria-label = "播放/暫停">▶</button>
+    <input type = "range" id = "progressBar" class = "progress-bar" value = "0" min = "0" step = "0.1" aria-label = "播放進度">
+    <span class = "time-display" id="timeDisplay">0:00 / 0:00</span>
+  </div>
+
+  <button id = "toggleBtn" class = "toggle-btn" title = "收起/展開" aria-label = "收起/展開播放器">◀</button>
+</div>
+
+<div class = "container">
+    <p><ruby>火<rt>ひ</rt></ruby>を<ruby>使<rt>つか</rt></ruby>う<ruby>動物<rt>どうぶつ</rt></ruby>って<ruby>人間<rt>にんげん</rt></ruby>だけなんだって</p>
+    <p><ruby>火<rt>ひ</rt></ruby>を<ruby>恐<rt>おそ</rt></ruby>れなかったから<ruby>文明<rt>ぶんめい</rt></ruby>は<ruby>発展<rt>はってん</rt></ruby>したの</p>
+    <p>だからなのかな</p>
+    <p>インターネットのあちこちで<ruby>毎日<rt>まいにち</rt></ruby><ruby>誰<rt>だれ</rt></ruby>かが<ruby>燃<rt>も</rt></ruby>えている</p>
+    <p><ruby>笑<rt>わら</rt></ruby>っちゃうよね</p>
+    <p><ruby>火種<rt>ひだね</rt></ruby>さえあれば、あとはもう<ruby>見<rt>み</rt></ruby>てるだけ</p>
+    <p>ここで<ruby>問題<rt>もんだい</rt></p>
+    <p><ruby>火種<rt>ひだね</rt></ruby>って<ruby>燃<rt>も</rt></ruby>え<ruby>尽<rt>つ</rt></ruby>きるとどうなるでしょうか？</p>
+    <p>3、2、1...<ruby>時間<rt>じかん</rt><ruby>切<rt>ぎ</rt></ruby>れ</p>
+    <p><ruby>正解<rt>せいかい</rt></ruby>は...<ruby>周<rt>まわ</rt></ruby>りが<ruby>燃<rt>も</rt></ruby>える</p>
+    <p><ruby>友人<rt>ゆうじん</rt></ruby>とか<ruby>家族<rt>かぞく</rt></ruby>とか、えっと<ruby>何<rt>なん</rt></ruby>だっけ？</p>
+    <p><ruby>新<rt>あたら</rt></ruby>しく<ruby>結成<rt>けっせい</rt></ruby>してと...あ、そう、そう、ミュータイプとか</p>
+</div>
+
+<footer class = "site-footer">
+    <h1>來源取自 <a href = "https://youtu.be/c61vP12ZfG8">BanG Dream! YUME∞MITA 第03話【隨便你】</a>| 21:30 ~ 22:42</h1>
+</footer>
+
+</body>
+</html>
+
+<script>
+    (function () {
+        const audio = document.getElementById('myAudio');
+        const playBtn = document.getElementById('playBtn');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const floatingPlayer = document.getElementById('floatingPlayer');
+
+        function formatTime(seconds) {
+        if (isNaN(seconds)) return "0:00";
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function updateProgressBarColor() {
+        if (!audio.duration) return;
+        const percentage = (audio.currentTime / audio.duration) * 100;
+        progressBar.style.background = `linear-gradient(to right, #878787 ${percentage}%, #e0e0e0 ${percentage}%)`;
+        }
+
+        audio.addEventListener('loadedmetadata', () => {
+        progressBar.max = audio.duration;
+        timeDisplay.textContent = `0:00 / ${formatTime(audio.duration)}`;
+        updateProgressBarColor();
+        });
+
+        playBtn.addEventListener('click', () => {
+        if (audio.paused) {
+            audio.play();
+            playBtn.textContent = '❚❚';
+        } else {
+            audio.pause();
+            playBtn.textContent = '▶';
+        }
+        });
+
+        audio.addEventListener('timeupdate', () => {
+        progressBar.value = audio.currentTime;
+        timeDisplay.textContent = `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
+        updateProgressBarColor();
+        });
+
+        progressBar.addEventListener('input', () => {
+        audio.currentTime = progressBar.value;
+        updateProgressBarColor();
+        });
+
+        audio.addEventListener('ended', () => {
+        playBtn.textContent = '▶';
+        progressBar.value = 0;
+        updateProgressBarColor();
+        });
+
+        toggleBtn.addEventListener('click', () => {
+        floatingPlayer.classList.toggle('collapsed');
+        const isCollapsed = floatingPlayer.classList.contains('collapsed');
+        toggleBtn.textContent = isCollapsed ? '▶' : '◀';
+        });
+    })();
+</script>
